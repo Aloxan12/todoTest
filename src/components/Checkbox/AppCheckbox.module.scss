@@ -9,9 +9,9 @@
   z-index: -1;
   opacity: 0;
   &+label {
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
-    user-select: none;
     color: black;
     font-size: 18px;
     &::before {
