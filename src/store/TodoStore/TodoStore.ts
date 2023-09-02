@@ -32,10 +32,10 @@ class TodoStore {
         this.setIsLoading(true)
         try {
             const result = await api.get('todos', { params: { _page: this.page } });
-            // const totalCount = await result?.headers?.get('x-total-count') || 0;
+            const totalCount = await result?.headers['x-total-count']
             const todoList = await result.data;
             if (todoList) {
-                // this.setTotalCount(Number(totalCount) || 0)
+                this.setTotalCount(Number(totalCount) || 0)
                 this.setTodoList(todoList);
                 this.setPage(this.page + 1)
             }

@@ -32,7 +32,7 @@ const App = observer(() => {
         return ()=>{
             document.removeEventListener('scroll', scrollHandler)
         }
-    },[])
+    },[scrollHandler])
 
     return (
         <div className='app'>
