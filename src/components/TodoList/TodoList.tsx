@@ -1,7 +1,7 @@
 import cls from './TodoList.module.scss'
 import {TodoListHeader} from "./components/TodoListHeader/TodoListHeader";
 import {TodoItem} from "./components/TodoItem/TodoItem";
-import {ITodo} from "src/types/todo";
+import {ITodo} from "../../types/todo";
 import {memo} from "react";
 
 interface ITodoListProps{

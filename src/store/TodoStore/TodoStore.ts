@@ -3,47 +3,39 @@ import {ITodo} from "../../types/todo";
 import {api} from "../../api/api";
 
 class TodoStore {
-    @observable
+
     todoList: ITodo[] = []
 
-    @observable
     page: number = 1
 
-    @observable
     totalCount: number = 1
 
-    @observable
     isLoading: boolean = false
 
-    @action
     setPage(page: number){
         this.page = page
     }
 
-    @action
     setIsLoading(loading: boolean){
         this.isLoading = loading
     }
 
-    @action
     setTotalCount(totalCount: number){
         this.totalCount = totalCount
     }
 
-    @action
     setTodoList(todoList: ITodo[]){
         this.todoList = [...this.todoList, ...todoList]
     }
 
-    @action
     getTodoList = async () => {
         this.setIsLoading(true)
         try {
             const result = await api.get('todos', { params: { _page: this.page } });
-            const totalCount = await result.headers.get('x-total-count');
+            // const totalCount = await result?.headers?.get('x-total-count') || 0;
             const todoList = await result.data;
             if (todoList) {
-                this.setTotalCount(Number(totalCount) || 0)
+                // this.setTotalCount(Number(totalCount) || 0)
                 this.setTodoList(todoList);
                 this.setPage(this.page + 1)
             }
