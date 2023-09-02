@@ -7,10 +7,18 @@ class TodoStore {
     todoList: ITodo[] = []
 
     @observable
-    totalCount: number = 0
+    page: number = 1
+
+    @observable
+    totalCount: number = 1
 
     @observable
     isLoading: boolean = false
+
+    @action
+    setPage(page: number){
+        this.page = page
+    }
 
     @action
     setIsLoading(loading: boolean){
@@ -24,17 +32,18 @@ class TodoStore {
 
     @action
     setTodoList(todoList: ITodo[]){
-        this.todoList = todoList
+        this.todoList = [...this.todoList, ...todoList]
     }
 
     @action
-    getTodoList = async (page: number = 1) => {
+    getTodoList = async () => {
         this.setIsLoading(true)
         try {
-            const result = await api.get('todos', { params: { _page: page } });
+            const result = await api.get('todos', { params: { _page: this.page } });
             const todoList = await result.data;
             if (todoList) {
                 this.setTodoList(todoList);
+                this.setPage(this.page + 1)
             }
         } catch (e) {
             console.log(e);
@@ -57,8 +66,10 @@ class TodoStore {
         makeAutoObservable(this,{
             todoList: observable,
             isLoading: observable,
+            page: observable,
             totalCount: observable,
             setTodoList: action,
+            setPage: action,
             getTodoList: action,
             setTotalCount: action,
             getTotalCount: action

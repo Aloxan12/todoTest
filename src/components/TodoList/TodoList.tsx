@@ -1,22 +1,20 @@
-import {memo, useEffect} from "react";
-import todoStore from "../../store/TodoStore/TodoStore";
-import {observer} from "mobx-react";
 import cls from './TodoList.module.scss'
 import {TodoListHeader} from "./components/TodoListHeader/TodoListHeader";
 import {TodoItem} from "./components/TodoItem/TodoItem";
+import {ITodo} from "src/types/todo";
+import {memo} from "react";
 
-export const TodoList = observer(() => {
-    const {todoList, isLoading, getTodoList, getTotalCount, totalCount} = todoStore
+interface ITodoListProps{
+    todoList: ITodo[]
+    isLoading: boolean
+}
 
-    useEffect(()=>{
-        getTotalCount().finally(()=> console.log('success'))
-        getTodoList(1)
-    },[])
-
+export const TodoList = memo(({todoList, isLoading}:ITodoListProps) => {
     return (
         <div className={cls.todoListWrap}>
-            <TodoListHeader count={totalCount}/>
+            <TodoListHeader count={todoList.length}/>
             {todoList.map((todo)=> <TodoItem todo={todo} key={todo.id}/>)}
+            {isLoading && <div>Загрузка...</div>}
         </div>
     );
 })
