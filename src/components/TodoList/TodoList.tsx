@@ -14,7 +14,7 @@ export const TodoList = memo(({todoList, isLoading}:ITodoListProps) => {
         <div className={cls.todoListWrap}>
             <TodoListHeader count={todoList.length}/>
             {todoList.map((todo)=> <TodoItem todo={todo} key={todo.id}/>)}
-            {isLoading && <div>Загрузка...</div>}
+            {isLoading && <div>Loading...</div>}
         </div>
     );
 })
