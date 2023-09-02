@@ -40,8 +40,10 @@ class TodoStore {
         this.setIsLoading(true)
         try {
             const result = await api.get('todos', { params: { _page: this.page } });
+            const totalCount = await result.headers.get('x-total-count');
             const todoList = await result.data;
             if (todoList) {
+                this.setTotalCount(Number(totalCount) || 0)
                 this.setTodoList(todoList);
                 this.setPage(this.page + 1)
             }
@@ -49,17 +51,6 @@ class TodoStore {
             console.log(e);
         }
         this.setIsLoading(false)
-    }
-
-    @action
-    getTotalCount = async () => {
-        try {
-            const response = await api.get('todos'+'?_limit=0', { method: 'HEAD' });
-            const totalCount  =  await response.headers.get('x-total-count');
-            this.setTotalCount(Number(totalCount) || 0)
-        } catch (e) {
-            console.log(e);
-        }
     }
 
     constructor() {
@@ -72,7 +63,6 @@ class TodoStore {
             setPage: action,
             getTodoList: action,
             setTotalCount: action,
-            getTotalCount: action
         });
     }
 }

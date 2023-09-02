@@ -6,28 +6,28 @@ import {observer} from "mobx-react";
 
 
 const App = observer(() => {
-    const [loadMore, setLoadMore] = useState(false)
-    const {todoList, isLoading, getTodoList, getTotalCount, totalCount} = todoStore
+    const [isMounted, setIsMounted] = useState(false)
+    const [loadMore, setLoadMore] = useState(true)
+    const {todoList, isLoading, getTodoList, totalCount} = todoStore
 
     useEffect(()=>{
-        getTotalCount()
-    },[getTotalCount])
-
-    useEffect(()=>{
-        if(loadMore){
+        if(loadMore && isMounted){
             getTodoList()
-                .finally(()=> setLoadMore(false))
+                .finally(()=>{
+                    setLoadMore(false)
+                })
         }
-    },[loadMore])
+    },[loadMore, isMounted])
 
     const scrollHandler = (e: Event)=>{
         const doc = (e.target as Document).documentElement
-        if(doc.scrollHeight - (doc.scrollTop + window.innerHeight) < 100 && (todoList.length < totalCount)){
+        if(doc.scrollHeight - (doc.scrollTop + window.innerHeight) < 100 && todoList.length < totalCount){
             setLoadMore(true)
         }
     }
 
     useEffect(()=>{
+        setIsMounted(true)
         document.addEventListener('scroll', scrollHandler)
         return ()=>{
             document.removeEventListener('scroll', scrollHandler)
