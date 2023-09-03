@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "node",
+  "name": "todotest",
   "builds": [
     { "src": "src/main.tsx", "use": "@vercel/node" }
   ],
